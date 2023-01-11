@@ -35,7 +35,6 @@ home_path = expanduser("~")
 quicklook_base_path = os.path.join(home_path, "public_html/cloud-radars")
 galileo_raw_path = '/radar/radar-galileo/raw'
 
-data_datetime = datetime.now()
 
 
 mpl.use('Agg')
@@ -95,6 +94,9 @@ def make_cmap(colors, position=None, bit=False):
 
 
 def main():
+
+    data_datetime = datetime.now()
+
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=", "hour="])
