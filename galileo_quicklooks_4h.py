@@ -119,18 +119,18 @@ cmap_hoganjet = make_cmap(hoganjet, bit=True)
 
 # LOCATE GALILEO FILES FOR SELECTED DATE
 
-dateyr = datestr[0:4]
-dateym = datestr[0:6]
+dateyr = datestr1[0:4]
+dateym = datestr1[0:6]
 user = getpass.getuser()
 
 
 os.chdir(os.path.join(galileo_raw_path,datestr0))
 rawfiles94 = [os.path.join(galileo_raw_path, f)
-              for f in glob.glob('*{}*raw.nc'.format(datestr))]
+              for f in glob.glob('*{}*raw.nc'.format(datestr0))]
 
 os.chdir(os.path.join(galileo_raw_path,datestr1))
 rawfiles94 += [os.path.join(galileo_raw_path, f)
-              for f in glob.glob('*{}*raw.nc'.format(datestr))]
+              for f in glob.glob('*{}*raw.nc'.format(datestr1))]
 
 
 output = set()
