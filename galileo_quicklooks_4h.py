@@ -123,7 +123,6 @@ dateyr = datestr1[0:4]
 dateym = datestr1[0:6]
 user = getpass.getuser()
 
-
 os.chdir(os.path.join(galileo_raw_path,datestr0))
 rawfiles94 = [os.path.join(galileo_raw_path, datestr0, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr0))]
@@ -133,12 +132,17 @@ rawfiles94 += [os.path.join(galileo_raw_path, datestr1, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr1))]
 
 
+print(rawfiles94)
+
 output = set()
 for x in rawfiles94:
     output.add(x)
 print(output)
 
+rawfiles94 = list(output)
             
+print(rawfiles94)
+
 figpath = os.path.join(quicklook_base_path, dateyr, dateym, datestr1)
 
 istartfile = 0
