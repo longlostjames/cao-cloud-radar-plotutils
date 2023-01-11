@@ -35,25 +35,32 @@ home_path = expanduser("~")
 quicklook_base_path = os.path.join(home_path, "public_html/cloud-radars")
 galileo_raw_path = '/radar/radar-galileo/raw'
 
+data_datetime = datetime.now()
+
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "d:", ["date="])
+    opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=","hour="])
 except getopt.GetoptError as err:
     # print help information and exit:
     print(err)  # will print something like "option -a not recognized
     sys.exit(2)
 
-data_datetime = datetime.now()
+
+for o, a in opts:
+    if o == "-d":
+        day = a
+        data_datetime = datetime.strptime(day,"%Y%m%d")
+    elif o in ("-h"):
+        hour_end = a 
+        data_datetime.replace(hour=hour_end,minute=0,second=0,microsecond=0)
+    else:
+            assert False, "unhandled option"
+
+
 dt1 = data_datetime
 dt0 = data_datetime - timedelta(hours=4)
 datestr1 = dt1.strftime('%Y%m%d')
 datestr0 = dt0.strftime('%Y%m%d')
 
-
-for o, a in opts:
-    if o == "-d":
-        datestr = a
-    else:
-        assert False, "unhandled option"
 
 mpl.use('Agg')
 
@@ -123,13 +130,13 @@ dateyr = datestr1[0:4]
 dateym = datestr1[0:6]
 user = getpass.getuser()
 
-os.chdir(os.path.join(galileo_raw_path,datestr0))
+os.chdir(os.path.join(galileo_raw_path, datestr0))
 rawfiles94 = [os.path.join(galileo_raw_path, datestr0, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr0))]
 
-os.chdir(os.path.join(galileo_raw_path,datestr1))
+os.chdir(os.path.join(galileo_raw_path, datestr1))
 rawfiles94 += [os.path.join(galileo_raw_path, datestr1, f)
-              for f in glob.glob('*{}*raw.nc'.format(datestr1))]
+               for f in glob.glob('*{}*raw.nc'.format(datestr1))]
 
 
 print(rawfiles94)
@@ -140,7 +147,7 @@ for x in rawfiles94:
 print(output)
 
 rawfiles94 = list(output)
-            
+
 print(rawfiles94)
 
 figpath = os.path.join(quicklook_base_path, dateyr, dateym, datestr1)
