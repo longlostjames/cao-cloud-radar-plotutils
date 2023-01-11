@@ -61,10 +61,11 @@ dt0 = data_datetime - timedelta(hours=4)
 datestr1 = dt1.strftime('%Y%m%d')
 datestr0 = dt0.strftime('%Y%m%d')
 
+print(dt1);
+print(dt0);
 
 mpl.use('Agg')
 
-print(datestr1)
 
 version = 0.1
 
