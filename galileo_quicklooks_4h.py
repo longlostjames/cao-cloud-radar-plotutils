@@ -124,7 +124,7 @@ dateym = datestr[0:6]
 user = getpass.getuser()
 
 
-os.chdir(os.path.join(galileo_raw_path,datestr1))
+os.chdir(os.path.join(galileo_raw_path,datestr0))
 rawfiles94 = [os.path.join(galileo_raw_path, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr))]
 
@@ -139,7 +139,7 @@ for x in rawfiles94:
 print(output)
 
             
-figpath = os.path.join(quicklook_base_path, dateyr, dateym, datestr)
+figpath = os.path.join(quicklook_base_path, dateyr, dateym, datestr1)
 
 istartfile = 0
 iendfile = -1
@@ -227,7 +227,7 @@ spw_plotmax = np.sqrt(10.)
 axs[0].xaxis.set_major_formatter(myFmt)
 h0 = axs[0].pcolormesh(dtime0[:], gate_edges, ZED_HCnew.transpose(
 ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
-titlestr = "Chilbolton W-band Galileo Radar: "+datestr
+titlestr = "Chilbolton W-band Galileo Radar: "+datestr1
 axs[0].set_title(titlestr)
 cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
 cb0.ax.set_ylabel("ZED_HC (dB)")
@@ -336,6 +336,6 @@ axs[2].grid(True)
 axs[3].grid(True)
 axs[4].grid(True)
 
-figfile = "radar-galileo_{}_last4hr.png".format(datestr)
+figfile = "radar-galileo_{}_last4hr.png".format(datestr1)
 
 plt.savefig(os.path.join(figpath, figfile), dpi=200)
