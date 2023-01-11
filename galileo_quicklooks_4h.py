@@ -97,11 +97,11 @@ def make_cmap(colors, position=None, bit=False):
 def main():
 
     try:
-    opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=", "hour="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=", "hour="])
     except getopt.GetoptError as err:
         # print help information and exit:
-    print(err)  # will print something like "option -a not recognized
-    sys.exit(2)
+        print(err)  # will print something like "option -a not recognized
+        sys.exit(2)
 
 
     for o, a in opts:
