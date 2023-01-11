@@ -97,6 +97,9 @@ def main():
 
     data_datetime = datetime.now()
 
+    hour_end = data_datetime.hour;
+
+    print(hour_end);
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=", "hour="])
@@ -114,7 +117,6 @@ def main():
             hour_end = int(a)
             print(hour_end)
             data_datetime = data_datetime.replace(hour=hour_end, minute=0, second=0, microsecond=0)
-            print(data_datetime)
         else:
             assert False, "unhandled option"
 
