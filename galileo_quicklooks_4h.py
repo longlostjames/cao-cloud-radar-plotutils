@@ -125,11 +125,11 @@ user = getpass.getuser()
 
 
 os.chdir(os.path.join(galileo_raw_path,datestr0))
-rawfiles94 = [os.path.join(galileo_raw_path, f)
+rawfiles94 = [os.path.join(galileo_raw_path, datestr0, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr0))]
 
 os.chdir(os.path.join(galileo_raw_path,datestr1))
-rawfiles94 += [os.path.join(galileo_raw_path, f)
+rawfiles94 += [os.path.join(galileo_raw_path, datestr1, f)
               for f in glob.glob('*{}*raw.nc'.format(datestr1))]
 
 
