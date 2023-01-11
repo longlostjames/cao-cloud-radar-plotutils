@@ -32,7 +32,7 @@ nco = Nco()
 # Set up some path definitions
 # ----------------------------
 home_path = expanduser("~")
-quicklook__base_path = os.path.join(home_path, "public_html/cloud-radars")
+quicklook_base_path = os.path.join(home_path, "public_html/cloud-radars")
 galileo_raw_path = '/radar/radar-galileo/raw'
 
 try:
