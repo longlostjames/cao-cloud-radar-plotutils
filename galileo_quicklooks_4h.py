@@ -50,7 +50,7 @@ for o, a in opts:
         day = a
         data_datetime = datetime.strptime(day,"%Y%m%d")
     elif o in ("-h"):
-        hour_end = a 
+        hour_end = int(a)
         data_datetime.replace(hour=hour_end,minute=0,second=0,microsecond=0)
     else:
             assert False, "unhandled option"
