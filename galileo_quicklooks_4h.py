@@ -57,7 +57,7 @@ for o, a in opts:
 
 mpl.use('Agg')
 
-print(datestr)
+print(datestr1)
 
 version = 0.1
 
