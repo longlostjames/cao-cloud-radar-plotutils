@@ -286,7 +286,7 @@ def main():
     h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
     ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
-    cb1.ax.set_ylabel("{VEL} (m$s^{-1}$)")
+    cb1.ax.set_ylabel("{} (m$s^{-1}$)".format(VEL))
     axs[1].grid(True)
     axs[1].set_xlabel('Time (UTC)')
     axs[1].set_ylabel('Height (km)')
@@ -300,7 +300,7 @@ def main():
         axs[2].set_xlabel('Time (UTC)')
         axs[2].set_ylabel('Height (km)')
     except:
-        print("No {}".format(SPW))
+        print("No {}".format(LDR))
 
     try:
         axs[3].xaxis.set_major_formatter(myFmt)
@@ -312,14 +312,14 @@ def main():
         axs[3].set_xlabel('Time (UTC)')
         axs[3].set_ylabel('Height (km)')
     except:
-        print("No {SPW}")
+        print("No {}".format(SPW))
 
     try:
         ZED_XHCnew = DS0['ZED_XHC'][:, :]
         ZED_XHCnew = ZED_XHCnew+20. * \
             np.log10(rng[None, :])-20.*np.log10(rng[None, :]-drng)
     except:
-        print("No ZED_XHC")
+        print("No {}".format(ZEDX))
         ZED_XHCnew = np.empty([nray, ngate])
 
     axs[4].xaxis.set_major_formatter(myFmt)
