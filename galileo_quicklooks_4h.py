@@ -259,7 +259,7 @@ def main():
 
     if radar == 'galileo':
         titlestr = "Chilbolton W-band Galileo Radar: "
-    else radar == 'copernicus':
+    else:
         titlestr = "Chilbolton Ka-band Copernicus Radar"
     titlestr = "{}{}".format(titlestr,datestr1)
 
