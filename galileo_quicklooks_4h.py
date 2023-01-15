@@ -34,7 +34,10 @@ nco = Nco()
 home_path = expanduser("~")
 quicklook_base_path = os.path.join(home_path, "public_html/cloud-radars")
 galileo_raw_path = '/radar/radar-galileo/raw'
+copernicus_raw_path = '/radar/radar-copernicus/raw'
 
+# Default to copernicus
+radar_raw_path = copernicus_raw_path
 
 mpl.use('Agg')
 
@@ -101,7 +104,7 @@ def main():
     print(hour_end);
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:h:", ["day=", "hour="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:h:r:", ["day=", "hour=","radar="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print(err)  # will print something like "option -a not recognized
@@ -116,9 +119,12 @@ def main():
             hour_end = int(a)
             print(hour_end)
             data_datetime = data_datetime.replace(hour=hour_end, minute=0, second=0, microsecond=0)
+        elif o in ("-r"):
+            radar = a
         else:
             assert False, "unhandled option"
 
+    radar_raw_path = '/radar/radar-{}/raw'.format(radar)
 
     dt1 = data_datetime
     dt0 = data_datetime - timedelta(hours=4)
@@ -139,35 +145,35 @@ def main():
     dateym = datestr1[0:6]
     user = getpass.getuser()
 
-    os.chdir(os.path.join(galileo_raw_path, datestr0))
-    rawfiles94 = [os.path.join(galileo_raw_path, datestr0, f)
+    os.chdir(os.path.join(radar_raw_path, datestr0))
+    rawfiles = [os.path.join(radar_raw_path, datestr0, f)
                 for f in glob.glob('*{}*raw.nc'.format(datestr0))]
 
-    os.chdir(os.path.join(galileo_raw_path, datestr1))
-    rawfiles94 += [os.path.join(galileo_raw_path, datestr1, f)
+    os.chdir(os.path.join(radar_raw_path, datestr1))
+    rawfiles += [os.path.join(radar_raw_path, datestr1, f)
                 for f in glob.glob('*{}*raw.nc'.format(datestr1))]
 
 
-    print(rawfiles94)
+    print(rawfiles)
 
     output = set()
-    for x in rawfiles94:
+    for x in rawfiles:
         output.add(x)
     print(output)
 
-    rawfiles94 = list(output)
+    rawfiles = list(output)
 
-    print(rawfiles94)
+    print(rawfiles)
 
     figpath = os.path.join(quicklook_base_path, dateyr, dateym, datestr1)
 
     istartfile = 0
     iendfile = -1
 
-    DS0 = nc4.Dataset(rawfiles94[istartfile], 'r')
+    DS0 = nc4.Dataset(rawfiles[istartfile], 'r')
     dtime_start = cftime.num2pydate(DS0['time'][:], DS0['time'].units)
 
-    DS1 = nc4.Dataset(rawfiles94[iendfile], 'r')
+    DS1 = nc4.Dataset(rawfiles[iendfile], 'r')
     dtime_end = cftime.num2pydate(DS1['time'][:], DS1['time'].units)
 
     # Fix day rollover problem
@@ -201,7 +207,7 @@ def main():
     axs[4].set_xlim(dt_min, dt_max)
     axs[4].set_ylim(0, hmax)
 
-    DS0 = nc4.Dataset(rawfiles94[istartfile], 'r', format='NETCDF4_CLASSIC')
+    DS0 = nc4.Dataset(rawfiles[istartfile], 'r')
     DS0.set_auto_mask(True)
 
     print(DS0)
@@ -251,7 +257,12 @@ def main():
     h0 = axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
     ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
 
-    titlestr = "Chilbolton W-band Galileo Radar: "+datestr1
+    if radar == 'galileo':
+        titlestr = "Chilbolton W-band Galileo Radar: "
+    else radar == 'copernicus':
+        titlestr = "Chilbolton Ka-band Copernicus Radar"
+    titlestr = "{}{}".format(titlestr,datestr1)
+
     axs[0].set_title(titlestr)
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
     cb0.ax.set_ylabel("ZED_HC (dB)")
@@ -312,8 +323,8 @@ def main():
 
     DS0.close()
 
-    for file in rawfiles94[istartfile+1:]:
-        DS0 = nc4.Dataset(file, 'r', format='NETCDF4_CLASSIC')
+    for file in rawfiles[istartfile+1:]:
+        DS0 = nc4.Dataset(file, 'r')
         DS0.set_auto_mask(True)
 
         if nray > 0:
@@ -363,7 +374,7 @@ def main():
     axs[3].grid(True)
     axs[4].grid(True)
 
-    figfile = "radar-galileo_last4hr.png"
+    figfile = "radar-{}_last4hr.png".format(radar)
 
     plt.savefig(os.path.join(quicklook_base_path, figfile), dpi=200)
 
