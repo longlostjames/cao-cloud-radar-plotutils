@@ -141,7 +141,7 @@ def main():
     cmap_hoganjet = make_cmap(hoganjet, bit=True)
 
     cmap = 'pyart_HomeyerRainbow'
-    cmap_vel = cmoceam.cm.balance
+    cmap_vel = cmocean.cm.balance
 
 
     # LOCATE GALILEO FILES FOR SELECTED DATE
