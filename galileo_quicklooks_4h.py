@@ -297,7 +297,7 @@ def main():
 
     try:
         axs[2].xaxis.set_major_formatter(myFmt)
-        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
+        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(), vmin=-35, vmax=5, cmap=cmap, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
         cb2.ax.set_ylabel("{} (dB)".format(LDR))
         axs[2].grid(True)
@@ -369,7 +369,7 @@ def main():
                 axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
                 ), vmin=-35, vmax=5, cmap=cmap, shading='auto')
                 axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
-                ), vmin=-40, vmax=40, cmap=cm.balance, shading='auto')
+                ), vmin=-40, vmax=40, cmap=cmap, shading='auto')
                 axs[3].pcolormesh(ray_edges, gate_edges, DS0[SPW][:, :].transpose(), norm=colors.LogNorm(
                     vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap, shading='auto')
 
