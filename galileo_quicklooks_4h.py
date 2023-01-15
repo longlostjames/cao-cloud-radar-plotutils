@@ -286,7 +286,7 @@ def main():
     h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
     ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
-    ylabel = "{} (m$s^{-1}$)".format(VEL)
+    ylabel = VEL+" (m$s^{-1}$)"
     cb1.ax.set_ylabel(ylabel)
     axs[1].grid(True)
     axs[1].set_xlabel('Time (UTC)')
