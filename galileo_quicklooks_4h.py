@@ -27,7 +27,7 @@ import sys
 import netCDF4 as nc4
 from nco import Nco
 nco = Nco()
-import cmocean as cm
+import cmocean
 
 # ----------------------------
 # Set up some path definitions
@@ -141,7 +141,7 @@ def main():
     cmap_hoganjet = make_cmap(hoganjet, bit=True)
 
     cmap = 'pyart_HomeyerRainbow'
-    cmap_vel = cm('balance')
+    cmap_vel = cmoceam.cm.balance
 
 
     # LOCATE GALILEO FILES FOR SELECTED DATE
