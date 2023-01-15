@@ -295,7 +295,7 @@ def main():
         axs[2].xaxis.set_major_formatter(myFmt)
         h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
-        cb2.ax.set_ylabel("{} (dB)".format(LDR))
+        cb2.ax.set_ylabel("{LDR} (dB)")
         axs[2].grid(True)
         axs[2].set_xlabel('Time (UTC)')
         axs[2].set_ylabel('Height (km)')
@@ -312,7 +312,7 @@ def main():
         axs[3].set_xlabel('Time (UTC)')
         axs[3].set_ylabel('Height (km)')
     except:
-        print("No {}".ormat(SPW))
+        print("No {SPW}")
 
     try:
         ZED_XHCnew = DS0['ZED_XHC'][:, :]
