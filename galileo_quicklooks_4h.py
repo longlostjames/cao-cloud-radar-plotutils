@@ -36,7 +36,6 @@ quicklook_base_path = os.path.join(home_path, "public_html/cloud-radars")
 galileo_raw_path = '/radar/radar-galileo/raw'
 
 
-
 mpl.use('Agg')
 
 
@@ -246,8 +245,9 @@ def main():
     spw_plotmax = np.sqrt(10.)
 
     axs[0].xaxis.set_major_formatter(myFmt)
-    h0 = axs[0].pcolormesh(dtime0[:], gate_edges, ZED_HCnew.transpose(
+    h0 = axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
     ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
+
     titlestr = "Chilbolton W-band Galileo Radar: "+datestr1
     axs[0].set_title(titlestr)
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
@@ -257,7 +257,7 @@ def main():
     axs[0].set_ylabel('Height (km)')
 
     axs[1].xaxis.set_major_formatter(myFmt)
-    h1 = axs[1].pcolormesh(dtime0[:], gate_edges, DS0['VEL_HC'][:, :].transpose(
+    h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0['VEL_HC'][:, :].transpose(
     ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
     cb1.ax.set_ylabel("VEL_HC (m$s^{-1}$)")
@@ -267,7 +267,7 @@ def main():
 
     try:
         axs[2].xaxis.set_major_formatter(myFmt)
-        h2 = axs[2].pcolormesh(dtime0[:], gate_edges, DS0['LDR_HC'][:, :].transpose(
+        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0['LDR_HC'][:, :].transpose(
         ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
         cb2.ax.set_ylabel("LDR_HC (dB)")
@@ -279,7 +279,7 @@ def main():
 
     try:
         axs[3].xaxis.set_major_formatter(myFmt)
-        h3 = axs[3].pcolormesh(dtime0[:], gate_edges, DS0['SPW_HC'][:, :].transpose(
+        h3 = axs[3].pcolormesh(ray_edges, gate_edges, DS0['SPW_HC'][:, :].transpose(
         ), norm=colors.LogNorm(vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
         cb3 = plt.colorbar(h3, ax=axs[3], orientation='vertical')
         cb3.ax.set_ylabel("SPW_HC (m$s^{-1}$)")
@@ -298,7 +298,7 @@ def main():
         ZED_XHCnew = np.empty([nray, ngate])
 
     axs[4].xaxis.set_major_formatter(myFmt)
-    h4 = axs[4].pcolormesh(dtime0[:], gate_edges, ZED_XHCnew[:, :].transpose(
+    h4 = axs[4].pcolormesh(ray_edges, gate_edges, ZED_XHCnew[:, :].transpose(
     ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
     cb4 = plt.colorbar(h4, ax=axs[4], orientation='vertical')
     cb4.ax.set_ylabel("ZED_XHC (dBZ)")
@@ -327,24 +327,27 @@ def main():
 
             gate_edges = range_km - 29.9792458/1000.
             gate_edges = np.append(gate_edges, gate_edges[-1]+2*29.9792458/1000.)
+            ray_duration = dtime0[-1]-dtime0[-2];
+            ray_edges = dtime0;
+            ray_edges = np.append(ray_edges,ray_edges[-1]+ray_duration)
 
             ZED_HCnew = DS0['ZED_HC'][:, :]+20. * \
                 np.log10(rng[None, :])-20.*np.log10(rng[None, :]+drng)
 
             try:
-                axs[1].pcolormesh(dtime0[:], gate_edges, DS0['VEL_HC'][:, :].transpose(
+                axs[1].pcolormesh(ray_edges, gate_edges, DS0['VEL_HC'][:, :].transpose(
                 ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
-                axs[2].pcolormesh(dtime0[:], gate_edges, DS0['LDR_HC'][:, :].transpose(
+                axs[2].pcolormesh(ray_edges, gate_edges, DS0['LDR_HC'][:, :].transpose(
                 ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
-                axs[0].pcolormesh(dtime0[:], gate_edges, ZED_HCnew.transpose(
+                axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
                 ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
-                axs[3].pcolormesh(dtime0[:], gate_edges, DS0['SPW_HC'][:, :].transpose(), norm=colors.LogNorm(
+                axs[3].pcolormesh(ray_edges, gate_edges, DS0['SPW_HC'][:, :].transpose(), norm=colors.LogNorm(
                     vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
 
                 ZED_XHCnew = DS0['ZED_XHC'][:, :]
                 ZED_XHCnew = ZED_XHCnew+20. * \
                     np.log10(rng[None, :])-20.*np.log10(rng[None, :]+drng)
-                axs[4].pcolormesh(dtime0[:], gate_edges, ZED_XHCnew[:, :].transpose(
+                axs[4].pcolormesh(ray_edges, gate_edges, ZED_XHCnew[:, :].transpose(
                 ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
             except:
                 print("Problem with plot")
@@ -357,9 +360,9 @@ def main():
     axs[3].grid(True)
     axs[4].grid(True)
 
-    figfile = "radar-galileo_{}_last4hr.png".format(datestr1)
+    figfile = "radar-galileo_last4hr.png"
 
-    plt.savefig(os.path.join(figpath, figfile), dpi=200)
+    plt.savefig(os.path.join(quicklook_base_path, figfile), dpi=200)
 
 
 if __name__ == "__main__":
