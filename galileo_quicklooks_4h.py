@@ -259,8 +259,18 @@ def main():
 
     if radar == 'galileo':
         titlestr = "Chilbolton W-band Galileo Radar: "
+        ZED="ZED_HC"
+        VEL="VEL_HC"
+        LDR="LDR_HC"
+        SPW="SPW_HC"
+        ZEDX="ZED_XHC"
     else:
-        titlestr = "Chilbolton Ka-band Copernicus Radar"
+        titlestr = "Chilbolton Ka-band Copernicus Radar: "
+        ZED="ZED_HC"
+        VEL="VEL_HC"
+        LDR="LDR_C"
+        SPW="SPW_HC"
+        ZEDX="ZED_XHC"
     titlestr = "{}{}".format(titlestr,datestr1)
 
     axs[0].set_title(titlestr)
@@ -271,37 +281,37 @@ def main():
     axs[0].set_ylabel('Height (km)')
 
     axs[1].xaxis.set_major_formatter(myFmt)
-    h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0['VEL_HC'][:, :].transpose(
+    h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
     ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
-    cb1.ax.set_ylabel("VEL_HC (m$s^{-1}$)")
+    cb1.ax.set_ylabel("{} (m$s^{-1}$)".format(VEL))
     axs[1].grid(True)
     axs[1].set_xlabel('Time (UTC)')
     axs[1].set_ylabel('Height (km)')
 
     try:
         axs[2].xaxis.set_major_formatter(myFmt)
-        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0['LDR_HC'][:, :].transpose(
+        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
         ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
-        cb2.ax.set_ylabel("LDR_HC (dB)")
+        cb2.ax.set_ylabel("{} (dB)".format(LDR))
         axs[2].grid(True)
         axs[2].set_xlabel('Time (UTC)')
         axs[2].set_ylabel('Height (km)')
     except:
-        print("No LDR_HC")
+        print("No {}".format(SPW))
 
     try:
         axs[3].xaxis.set_major_formatter(myFmt)
-        h3 = axs[3].pcolormesh(ray_edges, gate_edges, DS0['SPW_HC'][:, :].transpose(
+        h3 = axs[3].pcolormesh(ray_edges, gate_edges, DS0[SPW][:, :].transpose(
         ), norm=colors.LogNorm(vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
         cb3 = plt.colorbar(h3, ax=axs[3], orientation='vertical')
-        cb3.ax.set_ylabel("SPW_HC (m$s^{-1}$)")
+        cb3.ax.set_ylabel("{} (m$s^{-1}$)".format(SPW))
         axs[3].grid(True)
         axs[3].set_xlabel('Time (UTC)')
         axs[3].set_ylabel('Height (km)')
     except:
-        print("No SPW_HC")
+        print("No {}".ormat(SPW))
 
     try:
         ZED_XHCnew = DS0['ZED_XHC'][:, :]
@@ -315,7 +325,7 @@ def main():
     h4 = axs[4].pcolormesh(ray_edges, gate_edges, ZED_XHCnew[:, :].transpose(
     ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
     cb4 = plt.colorbar(h4, ax=axs[4], orientation='vertical')
-    cb4.ax.set_ylabel("ZED_XHC (dBZ)")
+    cb4.ax.set_ylabel("{} (dBZ)".format(ZEDX))
     axs[4].grid(True)
     axs[4].set_xlabel('Time (UTC)')
     axs[4].set_ylabel('Height (km)')
@@ -349,16 +359,16 @@ def main():
                 np.log10(rng[None, :])-20.*np.log10(rng[None, :]+drng)
 
             try:
-                axs[1].pcolormesh(ray_edges, gate_edges, DS0['VEL_HC'][:, :].transpose(
+                axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
                 ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
-                axs[2].pcolormesh(ray_edges, gate_edges, DS0['LDR_HC'][:, :].transpose(
+                axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
                 ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
                 axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
                 ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
-                axs[3].pcolormesh(ray_edges, gate_edges, DS0['SPW_HC'][:, :].transpose(), norm=colors.LogNorm(
+                axs[3].pcolormesh(ray_edges, gate_edges, DS0[SPW][:, :].transpose(), norm=colors.LogNorm(
                     vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
 
-                ZED_XHCnew = DS0['ZED_XHC'][:, :]
+                ZED_XHCnew = DS0[ZEDX][:, :]
                 ZED_XHCnew = ZED_XHCnew+20. * \
                     np.log10(rng[None, :])-20.*np.log10(rng[None, :]+drng)
                 axs[4].pcolormesh(ray_edges, gate_edges, ZED_XHCnew[:, :].transpose(
