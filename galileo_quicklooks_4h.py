@@ -275,7 +275,7 @@ def main():
 
     axs[0].set_title(titlestr)
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
-    cb0.ax.set_ylabel("ZED_HC (dB)")
+    cb0.ax.set_ylabel("{} (dB)".format(ZED))
     axs[0].grid(True)
     axs[0].set_xlabel('Time (UTC)')
     axs[0].set_ylabel('Height (km)')
