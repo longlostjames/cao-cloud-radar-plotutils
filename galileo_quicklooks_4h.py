@@ -240,6 +240,9 @@ def main():
 
     gate_edges = range_km - 29.9792458/1000.
     gate_edges = np.append(gate_edges, gate_edges[-1]+2*29.9792458/1000.)
+    ray_duration = dtime0[-1]-dtime0[-2];
+    ray_edges = dtime0;
+    ray_edges = np.append(ray_edges,ray_edges[-1]+ray_duration)
 
     spw_plotmin = np.sqrt(1e-3)
     spw_plotmax = np.sqrt(10.)
