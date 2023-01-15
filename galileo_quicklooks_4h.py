@@ -141,6 +141,8 @@ def main():
     cmap_hoganjet = make_cmap(hoganjet, bit=True)
 
     cmap = 'pyart_HomeyerRainbow'
+    cmap_vel = cm('balance')
+
 
     # LOCATE GALILEO FILES FOR SELECTED DATE
 
@@ -258,7 +260,7 @@ def main():
 
     axs[0].xaxis.set_major_formatter(myFmt)
     h0 = axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
-    ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
+    ), vmin=-40, vmax=40, cmap=cmap, shading='auto')
 
     if radar == 'galileo':
         titlestr = "Chilbolton W-band Galileo Radar: "
@@ -277,8 +279,6 @@ def main():
     titlestr = "{}{}".format(titlestr,datestr1)
 
     axs[0].set_title(titlestr)
-    h0 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[ZED][:, :].transpose(
-    ), vmin=-40, vmax=40, cmap=cmap, shading='auto')
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
     cb0.ax.set_ylabel("{} (dB)".format(ZED))
     axs[0].grid(True)
@@ -287,7 +287,7 @@ def main():
 
     axs[1].xaxis.set_major_formatter(myFmt)
     h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
-    ), vmin=-5, vmax=5, cmap=cm.balance, shading='auto')
+    ), vmin=-5, vmax=5, cmap=cmap_vel, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
     ylabel = VEL+" (m$s^{-1}$)"
     cb1.ax.set_ylabel(ylabel)
@@ -365,7 +365,7 @@ def main():
 
             try:
                 axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
-                ), vmin=-5, vmax=5, cmap=cmap, shading='auto')
+                ), vmin=-5, vmax=5, cmap=cmap_vel, shading='auto')
                 axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
                 ), vmin=-35, vmax=5, cmap=cmap, shading='auto')
                 axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
