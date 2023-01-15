@@ -27,6 +27,7 @@ import sys
 import netCDF4 as nc4
 from nco import Nco
 nco = Nco()
+import cmocean as cm
 
 # ----------------------------
 # Set up some path definitions
@@ -138,6 +139,8 @@ def main():
         hoganjet = [tuple(map(int, i.split(','))) for i in f]
 
     cmap_hoganjet = make_cmap(hoganjet, bit=True)
+
+    cmap = 'pyart_HomeyerRainbow'
 
     # LOCATE GALILEO FILES FOR SELECTED DATE
 
@@ -275,7 +278,7 @@ def main():
 
     axs[0].set_title(titlestr)
     h0 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[ZED][:, :].transpose(
-    ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
+    ), vmin=-40, vmax=40, cmap=cmap, shading='auto')
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
     cb0.ax.set_ylabel("{} (dB)".format(ZED))
     axs[0].grid(True)
@@ -284,7 +287,7 @@ def main():
 
     axs[1].xaxis.set_major_formatter(myFmt)
     h1 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
-    ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
+    ), vmin=-5, vmax=5, cmap=cm.balance, shading='auto')
     cb1 = plt.colorbar(h1, ax=axs[1], orientation='vertical')
     ylabel = VEL+" (m$s^{-1}$)"
     cb1.ax.set_ylabel(ylabel)
@@ -296,7 +299,7 @@ def main():
         axs[2].xaxis.set_major_formatter(myFmt)
         h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
-        cb2.ax.set_ylabel("{LDR} (dB)")
+        cb2.ax.set_ylabel("{} (dB)".format(LDR))
         axs[2].grid(True)
         axs[2].set_xlabel('Time (UTC)')
         axs[2].set_ylabel('Height (km)')
@@ -306,7 +309,7 @@ def main():
     try:
         axs[3].xaxis.set_major_formatter(myFmt)
         h3 = axs[3].pcolormesh(ray_edges, gate_edges, DS0[SPW][:, :].transpose(
-        ), norm=colors.LogNorm(vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
+        ), norm=colors.LogNorm(vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap, shading='auto')
         cb3 = plt.colorbar(h3, ax=axs[3], orientation='vertical')
         cb3.ax.set_ylabel("{} (m$s^{-1}$)".format(SPW))
         axs[3].grid(True)
@@ -325,7 +328,7 @@ def main():
 
     axs[4].xaxis.set_major_formatter(myFmt)
     h4 = axs[4].pcolormesh(ray_edges, gate_edges, ZED_XHCnew[:, :].transpose(
-    ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
+    ), vmin=-40, vmax=40, cmap=cmap, shading='auto')
     cb4 = plt.colorbar(h4, ax=axs[4], orientation='vertical')
     cb4.ax.set_ylabel("{} (dBZ)".format(ZEDX))
     axs[4].grid(True)
@@ -362,13 +365,13 @@ def main():
 
             try:
                 axs[1].pcolormesh(ray_edges, gate_edges, DS0[VEL][:, :].transpose(
-                ), vmin=-5, vmax=5, cmap=cmap_hoganjet, shading='auto')
+                ), vmin=-5, vmax=5, cmap=cmap, shading='auto')
                 axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
-                ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
+                ), vmin=-35, vmax=5, cmap=cmap, shading='auto')
                 axs[0].pcolormesh(ray_edges, gate_edges, ZED_HCnew.transpose(
-                ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
+                ), vmin=-40, vmax=40, cmap=cm.balance, shading='auto')
                 axs[3].pcolormesh(ray_edges, gate_edges, DS0[SPW][:, :].transpose(), norm=colors.LogNorm(
-                    vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap_hoganjet, shading='auto')
+                    vmin=spw_plotmin, vmax=spw_plotmax), cmap=cmap, shading='auto')
 
                 ZED_XHCnew = DS0[ZEDX][:, :]
                 ZED_XHCnew = ZED_XHCnew+20. * \
