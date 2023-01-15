@@ -274,6 +274,8 @@ def main():
     titlestr = "{}{}".format(titlestr,datestr1)
 
     axs[0].set_title(titlestr)
+    h0 = axs[1].pcolormesh(ray_edges, gate_edges, DS0[ZED][:, :].transpose(
+    ), vmin=-40, vmax=40, cmap=cmap_hoganjet, shading='auto')
     cb0 = plt.colorbar(h0, ax=axs[0], orientation='vertical')
     cb0.ax.set_ylabel("{} (dB)".format(ZED))
     axs[0].grid(True)
@@ -291,8 +293,7 @@ def main():
 
     try:
         axs[2].xaxis.set_major_formatter(myFmt)
-        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(
-        ), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
+        h2 = axs[2].pcolormesh(ray_edges, gate_edges, DS0[LDR][:, :].transpose(), vmin=-35, vmax=5, cmap=cmap_hoganjet, shading='auto')
         cb2 = plt.colorbar(h2, ax=axs[2], orientation='vertical')
         cb2.ax.set_ylabel("{} (dB)".format(LDR))
         axs[2].grid(True)
